@@ -1,9 +1,3 @@
-// Comentario de una linea 
-/*
-multiple linea 
-...
-..
-*/
 function nombre() {
     let nombreCliente = '';
 
@@ -28,32 +22,66 @@ do {
 
     edadCliente = parseInt(edadCliente);
 
-    if (edadCliente >= 16) {
+    if (edadCliente >= 18) {
         afirmacion = true;
     } else {
-        alert('Debes tener al menos 16 años para continuar.');
+        alert('Debes tener al menos 18 años para continuar.');
     }
 } while (!afirmacion);
 
 console.log('¡Bienvenido/a! Puedes continuar con la acción deseada.');
 
-let opcion = prompt(`Que producto deseas comprar?
-\n 1- Hoodie
-\n 2- Remera
-\n 3- Pantalon
-\n Escribe "ESC" para salir`).toUpperCase()
-
-while (opcion != "ESC") {
-    switch (opcion) {
-        case "1":
-            alert("El precio Actual es de $20.000")
-            break
-        case "2":
-            alert("El precio actual es de $8.200")
-            break
-        case "3":
-            alert("El precio Actual es de $18.000")
-            break
-        default: alert("Opcion no valida ")
+class Producto {
+    constructor(nombre, precio, porcentajeDeAlcohol, tipo) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.porcentajeDeAlcohol = porcentajeDeAlcohol;
+        this.tipo = tipo;
     }
 }
+const carrito = [];
+const lista = [];
+
+lista.push(new Producto("sprite", "900", "0%", "6a"));
+lista.push(new Producto("gancia", "1350", "17%", "5a"));
+lista.push(new Producto("campari", "2500", "27%", "5a"));
+lista.push(new Producto("cepita", "600", "0%", "6a"));
+lista.push(new Producto("coca cola", "900", "0%", "6a"));
+lista.push(new Producto("fernet", "3600", "36%", "5a"));
+
+console.log(lista);
+
+let respuesta = prompt("Esta noche vas a manejar?").toUpperCase();
+
+if (respuesta === "SI") {
+    console.log("Genial, eres el conductor designado");
+    const resultado = lista.filter((producto) => producto.porcentajeDeAlcohol === "0%");
+    console.log("Estas son las opciones que tenemos para ti: " + resultado.map(p => p.nombre).join(', '));
+} else if (respuesta === "NO") {
+    console.log("Entonces hoy puedes tomar alcohol si lo deseas");
+    const resultado1 = lista.filter((producto) => producto.porcentajeDeAlcohol !== "0%");
+    console.log("Estas son las opciones que tenemos para ti: " + resultado1.map(p => p.nombre).join(', '));
+}
+
+let agregarCarrito = prompt("¿Quieres agregar productos al carrito?").toUpperCase();
+
+if (agregarCarrito === "SI") {
+    while (true) {
+        let productoSeleccionado = prompt("Ingresa el nombre del producto que deseas agregar al carrito (Escribe 'FIN' para finalizar)").toLowerCase();
+        if (productoSeleccionado === 'fin') {
+            break;
+        } else {
+            let productoEncontrado = lista.find(producto => producto.nombre.toLowerCase() === productoSeleccionado);
+            if (productoEncontrado) {
+                carrito.push(productoEncontrado);
+                console.log(`${productoEncontrado.nombre} ha sido agregado al carrito.`);
+            } else {
+                console.log("Producto no encontrado. Inténtalo de nuevo.");
+            }
+        }
+    }
+}
+console.log("Productos en el carrito:");
+carrito.forEach((producto, index) => {
+    console.log(`${index + 1}. ${producto.nombre} - $${producto.precio}`);
+});
